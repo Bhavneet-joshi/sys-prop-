@@ -8,10 +8,14 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/Landing";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
+import Founders from "@/pages/about/Founders";
+import Company from "@/pages/about/Company";
 import Services from "@/pages/Services";
+import ServiceDetail from "@/pages/services/ServiceDetail";
 import Contact from "@/pages/Contact";
 import Policy from "@/pages/Policy";
 import Register from "@/pages/Register";
+import Login from '@/pages/Login';
 
 // Client pages
 import ClientDashboard from "@/pages/client/Dashboard";
@@ -32,6 +36,8 @@ import AdminContracts from "@/pages/admin/Contracts";
 import AdminContractSpecific from "@/pages/admin/ContractSpecific";
 import AdminNewContract from "@/pages/admin/NewContract";
 import AdminUserManagement from "@/pages/admin/UserManagement";
+import NavigationBar from './components/NavigationBar';
+import Footer from './components/Footer';
 
 function Router() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -46,6 +52,18 @@ function Router() {
 
   return (
     <Switch>
+      {/* Public Pages */}
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/about/founders" component={Founders} />
+      <Route path="/about/company" component={Company} />
+      <Route path="/services" component={Services} />
+      <Route path="/services/:slug" component={ServiceDetail} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/policy" component={Policy} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      
       {!isAuthenticated ? (
         <>
           <Route path="/" component={Landing} />
@@ -57,7 +75,7 @@ function Router() {
         </>
       ) : (
         <>
-          <Route path="/" component={Home} />
+          <Route path="/dashboard" component={Home} />
           
           {/* Client routes */}
           {user?.role === 'client' && (
@@ -102,8 +120,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <NavigationBar />
+        <div className="pt-16 min-h-screen flex flex-col">
+          <Toaster />
+          <Router />
+          <Footer />
+        </div>
       </TooltipProvider>
     </QueryClientProvider>
   );
